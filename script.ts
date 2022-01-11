@@ -8,7 +8,7 @@ async function seed(truncate: boolean = false) {
     await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name="User"`;
   }
 
-  const seeds = Array.from({ length: 10000 }).map(() => ({
+  const seeds = Array.from({ length: 1000 }).map(() => ({
     email: casual.email,
     fullname: casual.name,
   }));
