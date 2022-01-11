@@ -1,30 +1,27 @@
-import fs from 'fs';
-import path from 'path';
-import { EOL } from 'os';
-import { PrismaClient } from '@prisma/client';
+import casual from 'casual';
+import prisma from './src/lib/database';
+import * as usersController from './src/controllers/users.controller';
 
-const prisma = new PrismaClient({
-  log: [
-    { emit: 'event', level: 'query' },
-    { emit: 'event', level: 'info' },
-    { emit: 'stdout', level: 'warn' },
-    { emit: 'stdout', level: 'error' }
-  ]
-});
+async function seed(truncate: boolean = false) {
+  if (truncate) {
+    await prisma.$executeRaw`DELETE FROM "main"."User"`;
+    await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name="User"`;
+  }
 
-const LOG_FILE = 'database.log';
-const LOG_PATH = path.join(process.cwd(), LOG_FILE);
+  const seeds = Array.from({ length: 10000 }).map(() => ({
+    email: casual.email,
+    fullname: casual.name,
+  }));
 
-prisma.$on('query', async (e) => {
-  const query = e.query + ' - Duration: ' + e.duration + 'ms' + EOL;
+  const transactions = seeds.map((user) => prisma.user.create({ data: user }));
+  const response = await prisma.$transaction(transactions);
 
-  fs.appendFileSync(LOG_PATH, query);
-});
+  return response;
+}
 
 async function main() {
-  const users = await prisma.user.findMany({ include: { posts: true } });
-
-  console.dir(users, { depth: null });
+  await seed(true);
+  console.log('Seeding done...');
 }
 
 main()
