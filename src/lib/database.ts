@@ -19,7 +19,7 @@ const ERROR_LOG_PATH = path.join(process.cwd(), ERROR_LOG_FILE);
 
 prisma.$on('query', async (e) => {
   const date = new Date(e.timestamp).toLocaleString();
-  const query = `QUERY: ${date} | ${e.query} - Duration: ${e.duration}ms ${EOL}`;
+  const query = `DURATION: ${e.duration}ms - QUERY: ${date} | ${e.query} ${EOL}`;
 
   fs.appendFileSync(LOG_PATH, query);
 });
