@@ -5,7 +5,7 @@ import casual from 'casual';
 import prisma from './src/lib/database';
 import * as usersController from './src/controllers/users.controller';
 
-async function seedUsers(truncate: boolean = false) {
+export async function seedUsers(truncate: boolean = false) {
   if (truncate) {
     await prisma.$executeRaw`DELETE FROM "main"."User"`;
     await prisma.$executeRaw`DELETE FROM sqlite_sequence WHERE name="User"`;
@@ -19,11 +19,11 @@ async function seedUsers(truncate: boolean = false) {
   console.log('----------USERS INSERTED----------');
 }
 
-async function seed(truncate: boolean = false) {
+export async function seed(truncate: boolean = false) {
   await seedUsers(truncate);
 }
 
-async function genSeedData() {
+export async function genSeedData() {
   const users = Array.from({ length: 1000 }).map(() => ({
     email: casual.email,
     fullname: casual.name,
@@ -36,8 +36,11 @@ async function genSeedData() {
 }
 
 async function main() {
-  await genSeedData();
-  await seed(true);
+  // await genSeedData();
+  // await seed(true);
+  await usersController.filter();
+  await usersController.findUnique('Predovic_Merle@Bernardo.us');
+  await usersController.findFirst('Predovic_Merle@Bernardo.us');
 }
 
 main()
