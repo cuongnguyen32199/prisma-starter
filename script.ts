@@ -38,9 +38,10 @@ export async function genSeedData() {
 async function main() {
   // await genSeedData();
   // await seed(true);
-  await usersController.filter();
-  await usersController.findUnique('Predovic_Merle@Bernardo.us');
-  await usersController.findFirst('Predovic_Merle@Bernardo.us');
+  // await usersController.filter();
+  // await usersController.findUnique('Predovic_Merle@Bernardo.us');
+  // await usersController.findFirst('Predovic_Merle@Bernardo.us');
+  await usersController.batchInsert();
 }
 
 main()

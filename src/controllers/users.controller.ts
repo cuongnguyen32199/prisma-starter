@@ -19,3 +19,16 @@ export async function findUnique(email: string): Promise<any> {
 export async function findFirst(email: string): Promise<any> {
   return prisma.user.findFirst({ where: { email } });
 }
+
+export async function batchInsert(): Promise<any> {
+  return prisma.user.create({
+    data: {
+      email: 'cuongnm4215@gmail.com',
+      posts: {
+        create: {
+          title: 'From testing purpose',
+        },
+      },
+    },
+  });
+}
