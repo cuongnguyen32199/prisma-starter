@@ -41,7 +41,8 @@ async function main() {
   // await usersController.filter();
   // await usersController.findUnique('Predovic_Merle@Bernardo.us');
   // await usersController.findFirst('Predovic_Merle@Bernardo.us');
-  await usersController.batchInsert();
+  // await usersController.batchInsert();
+  // const users = await usersController.findRandomEmail('cuongnm4215');
 }
 
 main()

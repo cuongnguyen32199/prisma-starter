@@ -21,13 +21,25 @@ export async function findFirst(email: string): Promise<any> {
 }
 
 export async function batchInsert(): Promise<any> {
+  const emailWithRandom = `cuongnm4215.${Math.floor(Math.random() * 100)}@gmail.com`;
+
   return prisma.user.create({
     data: {
-      email: 'cuongnm4215@gmail.com',
+      email: emailWithRandom,
       posts: {
         create: {
           title: 'From testing purpose',
         },
+      },
+    },
+  });
+}
+
+export async function findRandomEmail(pattern: string): Promise<any> {
+  return prisma.user.findMany({
+    where: {
+      email: {
+        contains: pattern,
       },
     },
   });
